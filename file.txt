@@ -1,0 +1,22 @@
+[
+  {
+    "name": "ABA 123",
+    "age": 24,
+    "department": "d1"
+  },
+  {
+    "name": "BAC 234",
+    "age": 18,
+    "department": "d2"
+  },
+  {
+    "name": "BDA 345",
+    "age": 25,
+    "department": "d3"
+  },
+  {
+    "name": "AAA 456",
+    "age": 26,
+    "department": "d1"
+  }
+]

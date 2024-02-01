@@ -1,0 +1,26 @@
+<h1>Tell me about your favourite game</h1>
+<form action="/insert" method="post">
+    <label for="name">Your favourite game</label>
+    <input type="text" id="name" name="name"/>
+    <br>
+    <label>What's the genre?</label>
+    <input type="checkbox" id="action" name="genres" value="action"/><label for="action">Action</label>
+    <input type="checkbox" id="rpg" name="genres" value="rpg"/><label for="rpg">RPG</label>
+    <input type="checkbox" id="mmo" name="genres" value="mmo"/><label for="mmo">MMO</label>
+    <input type="checkbox" id="sim" name="genres" value="sim" /><label for="sim">Sim</label>
+    <br>
+    <label>Would you suggest this game?</label>
+    <input type="radio" id="yes" value="yes" name="suggest"/><label for="yes">YES</label>
+    <input type="radio" id="no" value="no" name="suggest"/><label for="no">NO</label>
+    <br>
+    <label>How would you rate it?</label>
+    <select name="rating" id="rating" name="rating">
+        <option value="1">1 🌟</option>
+        <option value="2">2 🌟</option>
+        <option value="3">3 🌟</option>
+        <option value="4">4 🌟</option>
+        <option value="5">5 🌟</option>
+    </select>
+    <br>
+    <button type="submit">SUBMIT</button>
+</form>

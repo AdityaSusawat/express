@@ -1,0 +1,13 @@
+<h1>This is the home page</h1>
+<a href="/insert">Click here to insert data</a>
+<br>
+<br>
+<% if (data.length === 0) { %>
+    <h3>There is no data in the file currently</h3>
+<% } else { %>
+    <ul>
+        <% data.forEach(element => { %>
+            <li><%= JSON.stringify(element, null, 2) %></li>
+        <%}); %>
+    </ul>
+<% }%>
