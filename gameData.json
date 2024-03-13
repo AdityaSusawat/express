@@ -16,5 +16,34 @@
     ],
     "suggest": "yes",
     "rating": "5"
+  },
+  {
+    "name": "Fallout 3",
+    "genres": "action",
+    "suggest": "yes",
+    "rating": "4"
+  },
+  {
+    "name": "Joe mama",
+    "genres": "action",
+    "suggest": "no",
+    "rating": "2"
+  },
+  {
+    "name": "Haha",
+    "genres": [
+      "action",
+      "rpg",
+      "mmo",
+      "sim"
+    ],
+    "suggest": "no",
+    "rating": "5"
+  },
+  {
+    "name": "Red dead redemption 2",
+    "genres": "rpg",
+    "suggest": "yes",
+    "rating": "5"
   }
 ]

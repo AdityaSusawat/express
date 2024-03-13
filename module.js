@@ -6,3 +6,9 @@ export class Logger extends EventEmitter {
     this.emit("msgLogged", { id: 1, name: "REX" });
   }
 }
+
+export class Laugher extends EventEmitter {
+  laugh(n) {
+    console.log("HA!".repeat(n));
+  }
+}

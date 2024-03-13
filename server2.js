@@ -1,6 +1,8 @@
 import express from "express";
 import { readFile, writeFile } from "fs/promises";
 
+//feature ideas: Depending on the name of the game, display an image from the google images API of that keyword in the homepage
+
 const app = express();
 
 app.use(express.urlencoded({ extended: false }));
@@ -23,7 +25,7 @@ app.post("/insert", async (req, res) => {
   //console.log(typeof req.body); //to read req.body.something, we need app.use(express.urlencoded({ extended: false }))
   try {
     const data = await readFile("./gameData.json", "utf-8"); //for await to work, we need to import from "fs/promises"
-    console.log(`the type of data after readFile is ${typeof data}`);
+    //console.log(`the type of data after readFile is ${typeof data}`);
     const jsonData = data ? JSON.parse(data) : [];
 
     jsonData.push(req.body);
