@@ -24,7 +24,17 @@ let users = [
   },
 ];
 
-//Create a user
+//middleware for authentication
+let loggedInUser = null;
+function isLoggedIn(req, res, next) {
+  if (!loggedInUser) {
+    res.status(401).send({ error: "Unauthorized: User not logged in" });
+  } else {
+    next();
+  }
+}
+
+//Create a user / SignUp
 app.post("/users", async (req, res) => {
   console.time("timeToCreate");
   const { email, age, password } = req.body;
@@ -70,7 +80,7 @@ app.get("/users", (req, res) => {
 });
 
 //Update a user
-app.put("/users", async (req, res) => {
+app.put("/users", isLoggedIn, async (req, res) => {
   try {
     const { email, newAge, newPassword } = req.body;
 
@@ -107,7 +117,7 @@ app.put("/users", async (req, res) => {
 });
 
 //Delete a user
-app.delete("/users", async (req, res) => {
+app.delete("/users", isLoggedIn, async (req, res) => {
   console.time("timeToDelete");
   try {
     const { email, password } = req.body;
@@ -135,6 +145,32 @@ app.delete("/users", async (req, res) => {
 
     console.timeEnd("timeToDelete");
     return res.status(200).send(user);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send({ error: "Internal server error" });
+  }
+});
+
+//Login
+app.post("/login", async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+      return res.status(401).send({ error: "email and password required" });
+    }
+
+    const user = users.find((e) => e.email === email);
+    if (!user) {
+      return res.status(404).send({ error: "Invalid credentials" });
+    }
+
+    const isMatch = await bcrypt.compare(password, user.hashedPassword);
+    if (!isMatch) {
+      return res.status(401).send({ error: "Invalid credentials" });
+    }
+    loggedInUser = user;
+    return res.status(200).send({ message: `Logged in as ${user.email}` });
   } catch (error) {
     console.log(error);
     return res.status(500).send({ error: "Internal server error" });
