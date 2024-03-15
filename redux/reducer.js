@@ -22,6 +22,13 @@ export default function reducer(state = [], action) {
         bug.id === action.payload.id ? { ...bug, resolved: !bug.resolved } : bug
       );
 
+    case actions.UPDATE_BUG:
+      return state.map((bug) =>
+        bug.id !== action.payload.id
+          ? bug
+          : { ...bug, description: action.payload.description }
+      );
+
     default:
       return state;
   }

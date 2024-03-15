@@ -20,3 +20,11 @@ export const toggleBug = (id) => ({
     id,
   },
 });
+
+export const updatedBug = (id, description) => ({
+  type: actions.UPDATE_BUG,
+  payload: {
+    id,
+    description,
+  },
+});
