@@ -1,219 +1,268 @@
-//! BINARY TREE PROBLEMS
+//? Two sum
 
-class Node {
-  constructor(n) {
-    this.val = n;
-    this.left = null;
-    this.right = null;
+const twoSum = (arr = [], target = 0) => {
+  let left = 0;
+  let right = arr.length - 1;
+
+  arr.sort((a, b) => a - b);
+
+  while (left != right) {
+    let currentSum = arr[left] + arr[right];
+    if (currentSum > target) {
+      right--;
+    } else if (currentSum < target) {
+      left++;
+    } else {
+      return [left, right];
+    }
   }
-}
 
-const a = new Node("a");
-const b = new Node("b");
-const c = new Node("c");
-const d = new Node("d");
-const e = new Node("e");
-const f = new Node("f");
-
-a.left = b;
-a.right = c;
-b.left = d;
-b.right = e;
-c.right = f;
-
-const n1 = new Node(5);
-const n2 = new Node(11);
-const n3 = new Node(3);
-const n4 = new Node(4);
-const n5 = new Node(2);
-const n6 = new Node(1);
-
-n1.left = n2;
-n1.right = n3;
-n2.left = n4;
-n2.right = n5;
-n3.right = n6;
-
-//? Depth first search
-//* TC : O(n)
-//* SC : O(n)
-
-const recursiveDepthFirst = (root) => {
-  if (root === null) return [];
-  const leftValues = recursiveDepthFirst(root.left); //b d e
-  const rightValues = recursiveDepthFirst(root.right); //c f
-  return [root.val, ...leftValues, ...rightValues];
+  return null;
 };
 
-const iterativeDepthFirst = (root) => {
-  if (root === null) return [];
+//console.log(twoSum([2, 7, 8, 15], 10));
+
+//? Array Product Except self
+
+const productExceptSelf = (arr = []) => {
+  let product = 1;
   let result = [];
-  let stack = [root];
+  for (let num of arr) {
+    product = product * num;
+  }
 
-  while (stack.length > 0) {
-    let current = stack.pop();
-    result.push(current.val);
-
-    if (current.right) stack.push(current.right);
-    if (current.left) stack.push(current.left);
+  for (let num of arr) {
+    result.push(product / num);
   }
 
   return result;
 };
 
-console.log(iterativeDepthFirst(a));
-console.log(recursiveDepthFirst(a));
+//console.log(productExceptSelf([1, 2, 3, 4]));
 
-//? Breadth first search
-//* TC : O(n)
-//* SC : O(n)
+//? Median of two arrays
 
-const iterativeBreadthFirst = (root) => {
-  if (root === null) return [];
-  let queue = [root];
-  let result = [];
+const median = (nums1 = [], nums2 = []) => {
+  const sum1 = nums1.reduce((acc, num) => {
+    acc += num;
+    return acc;
+  }, 0);
+  const sum2 = nums2.reduce((acc, num) => {
+    acc += num;
+    return acc;
+  }, 0);
 
-  while (queue.length > 0) {
-    let current = queue.shift();
-    result.push(current.val);
+  return (sum1 / nums1.length + sum2 / nums2.length) / 2;
+};
 
-    if (current.left) queue.push(current.left);
-    if (current.right) queue.push(current.right);
+//console.log(median([1, 3, 5], [2]));
+
+//?
+//7,1,5,3,6,4
+
+var maxProfit = function (prices = []) {
+  let minPrice = Infinity;
+  let maxProfit = 0;
+  for (let i = 0; i < prices.length; i++) {
+    if (prices[i] < minPrice) {
+      minPrice = prices[i];
+    } else {
+      maxProfit += prices[i] - minPrice;
+      minPrice = prices[i];
+    }
   }
 
-  return result;
+  return maxProfit;
 };
 
-console.log(iterativeBreadthFirst(a));
+//console.log(maxProfit([1, 4, 7, 8, 6, 4]));
 
-//? treeIncludes
+//? Pivot index
+//1,7,3,6,5,6
 
-const treeIncludesIterativeBFS = (target, root) => {
-  if (root === null) return [];
-  const queue = [root];
-  const result = [];
+var pivotIndex = function (nums = []) {
+  if (nums.length === 1) return nums[0];
 
-  while (queue.length > 0) {
-    const current = queue.shift();
-    if (current.val === target) return true;
-    result.push(current.val);
-
-    if (current.left) queue.push(current.left);
-    if (current.right) queue.push(current.right);
-  }
-
-  return result;
-};
-
-console.log(treeIncludesIterativeBFS("a", a));
-
-const treeIncludesRecursiveBFS = (target, root) => {
-  if (root === null) return false;
-  if (root.val === target) return true;
-
-  const leftSide = treeIncludesRecursiveBFS(target, root.left);
-  const rightSide = treeIncludesRecursiveBFS(target, root.right);
-
-  return leftSide || rightSide;
-};
-
-console.log(treeIncludesRecursiveBFS("g", a));
-
-//? treeSum
-//* TC : O(n)
-//* SC : O(n)
-
-const treeSumRec = (root) => {
-  if (root === null) return 0;
-  return root.val + treeSumRec(root.left) + treeSumRec(root.right);
-};
-
-console.log(treeSumRec(n1));
-
-const treeSumIte = (root) => {
-  if (root === null) return 0;
-  const queue = [root];
-  let sum = 0;
-
-  while (queue.length > 0) {
-    let current = queue.shift();
-    sum = sum + current.val;
-
-    if (current.left) queue.push(current.left);
-    if (current.right) queue.push(current.right);
-  }
-
-  return sum;
-};
-
-console.log(treeSumIte(n1));
-
-//? treeMin
-// TC : O(n)
-// SC : O(n)
-
-const treeMinIte = (root) => {
-  if (root === null) return null;
-  const queue = [root];
-  let min = +Infinity;
-
-  while (queue.length > 0) {
-    const current = queue.shift();
-    if (current.val < min) min = current.val;
-
-    if (current.left) queue.push(current.left);
-    if (current.right) queue.push(current.right);
-  }
-
-  return min;
-};
-
-console.log(treeMinIte(n1));
-
-const treeMinRec = (root) => {
-  if (root === null) return Infinity;
-  return Math.min(treeMinRec(root.left), treeMinRec(root.right), root.val);
-};
-
-console.log(treeMinRec(n1));
-
-//? maxPath
-
-const maxPath = (root) => {
-  if (root === null) return [];
-  //if (!root.left && !root.right) return [root.val];
   let leftSum = 0;
-  let rightSum = 0;
+  let rightSum = nums.reduce((a, b) => a + b);
 
-  if (root.left) {
-    for (let sum of maxPath(root.left)) leftSum += sum;
+  for (let i = 0; i < nums.length; i++) {
+    let current = nums[i];
+
+    rightSum -= nums[i];
+
+    if (rightSum === leftSum) {
+      return current;
+    }
+
+    leftSum += nums[i];
   }
 
-  if (root.right) {
-    for (let sum of maxPath(root.right)) rightSum += sum;
-  }
-
-  if (leftSum > rightSum) {
-    return [...maxPath(root.left), root.val];
-  } else {
-    return [...maxPath(root.right), root.val];
-  }
-
-  //return [Math.max(leftSum, rightSum), root.val]
+  return -1;
 };
 
-console.log(maxPath(n1));
+//console.log(pivotIndex([1, 7, 3, 6, 5, 6]));
 
-//? maxPathSum
-//* TC : O(n)
-//* SC : O(n)
+//? Majority element
+//[2,2,1,1,1,2,2]
 
-const maxPathSum = (root) => {
-  if (root === null) return 0;
-  let leftSum = maxPathSum(root.left);
-  let rightSum = maxPathSum(root.right);
+var majorityElement = function (nums = []) {
+  const memo = {};
+  const n = nums.length;
+  for (let i = 0; i < n; i++) {
+    if (nums[i] in memo) {
+      memo[nums[i]]++;
+    } else {
+      memo[nums[i]] = 1;
+    }
+  }
 
-  return Math.max(root.val + Math.max(leftSum, rightSum));
+  let maxVal = -Infinity;
+  let maxKey = null;
+
+  for (const key in memo) {
+    if (maxVal < memo[key]) {
+      maxVal = memo[key];
+      maxKey = key;
+    }
+  }
+
+  return parseInt(maxKey);
 };
 
-console.log(maxPathSum(n1));
+var majorityElementAlt = function (nums = []) {
+  let majorityElement = nums[0];
+  let count = 1;
+
+  for (let i = 1; i < nums.length; i++) {
+    if (nums[i] === majorityElement) {
+      count++;
+    } else {
+      count--;
+    }
+
+    if (count === 0) {
+      majorityElement = nums[i];
+      count++;
+    }
+  }
+
+  return majorityElement;
+};
+
+//console.log(majorityElementAlt([2, 2, 1, 1, 1, 2]));
+
+//? sortedSquares
+
+var sortedSquares = function (nums = []) {
+  const n = nums.length;
+  let result = new Array(n);
+  let start = 0;
+  let end = n - 1;
+
+  for (let i = n - 1; i >= 0; i--) {
+    if (Math.abs(nums[start]) >= Math.abs(nums[end])) {
+      result[i] = nums[start] * nums[start];
+      start++;
+    } else {
+      result[i] = nums[end] * nums[end];
+      end--;
+    }
+  }
+
+  return result;
+};
+
+//console.log(sortedSquares([-7, -3, 2, 3, 11]));
+
+//? Pascal triangle
+
+var generate = function (numRows = 0) {
+  if (numRows === 1) return [[1]];
+  if (numRows === 2) return [[1], [1, 1]];
+
+  let prevRows = generate(numRows - 1);
+  let nextRow = new Array(numRows).fill(1);
+
+  for (let i = 1; i < numRows - 1; i++) {
+    nextRow[i] = prevRows[numRows - 2][i - 1] + prevRows[numRows - 2][i];
+  }
+
+  prevRows.push(nextRow);
+  return prevRows;
+};
+
+//console.log(generate(5));
+
+//? Merge intervals
+
+var merge = function (intervals = []) {
+  intervals.sort((a, b) => a[0] - b[0]);
+  console.log(intervals);
+
+  for (let i = 0; i < intervals.length - 1; i++) {
+    if (intervals[i][1] >= intervals[i + 1][0]) {
+      intervals[i] = [
+        Math.min(intervals[i][0], intervals[i + 1][0]),
+        Math.max(intervals[i][1], intervals[i + 1][1]),
+      ];
+      intervals.splice(i + 1, 1);
+      i--;
+    }
+    //console.log(intervals[i+1][0])
+  }
+
+  return intervals;
+};
+
+// console.log(
+//   merge([
+//     [1, 4],
+//     [2, 3],
+//   ])
+// );
+
+//? 3Sum
+//[-1,0,1,2,-1,-4]
+
+var threeSum = function (nums = []) {
+  nums.sort((a, b) => a - b);
+  let result = [];
+
+  const twoSum = (arr = [], target) => {
+    let left = 0;
+    let right = arr.length - 1;
+
+    while (left < right) {
+      let currSum = arr[left] + arr[right];
+      if (currSum < target) {
+        left++;
+      } else if (currSum > target) {
+        right--;
+      } else {
+        return [arr[left], arr[right]];
+      }
+    }
+    return null;
+  };
+
+  for (let i = 0; i < nums.length; i++) {
+    let curr = nums[i];
+    let twoSumToFind = -curr;
+    let newNums = nums.filter((num) => num !== nums[i]);
+    let twoSumResult = twoSum(newNums, twoSumToFind);
+
+    if (twoSumResult !== null) {
+      twoSumResult.push(nums[i]);
+      result.push(twoSumResult);
+    }
+  }
+
+  const filteredResult = Array.from(
+    new Set(result.map((subArr) => JSON.stringify(subArr.sort())))
+  ).map(JSON.parse);
+
+  return filteredResult;
+};
+
+console.log(threeSum([-2, 0, 1, 1, 2]));
