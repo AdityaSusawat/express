@@ -311,3 +311,398 @@ const canConstruct2 = (target = "", arr = []) => {
 };
 
 console.log(canConstruct2("abcdef", ["ab", "abc", "cd", "def", "abcd"]));
+
+//? Two sum
+
+const twoSum = (arr = [], target = 0) => {
+  let left = 0;
+  let right = arr.length - 1;
+
+  arr.sort((a, b) => a - b);
+
+  while (left != right) {
+    let currentSum = arr[left] + arr[right];
+    if (currentSum > target) {
+      right--;
+    } else if (currentSum < target) {
+      left++;
+    } else {
+      return [left, right];
+    }
+  }
+
+  return null;
+};
+
+//console.log(twoSum([2, 7, 8, 15], 10));
+
+//? Array Product Except self
+
+const productExceptSelf = (arr = []) => {
+  let product = 1;
+  let result = [];
+  for (let num of arr) {
+    product = product * num;
+  }
+
+  for (let num of arr) {
+    result.push(product / num);
+  }
+
+  return result;
+};
+
+//console.log(productExceptSelf([1, 2, 3, 4]));
+
+//? Median of two arrays
+
+const median = (nums1 = [], nums2 = []) => {
+  const sum1 = nums1.reduce((acc, num) => {
+    acc += num;
+    return acc;
+  }, 0);
+  const sum2 = nums2.reduce((acc, num) => {
+    acc += num;
+    return acc;
+  }, 0);
+
+  return (sum1 / nums1.length + sum2 / nums2.length) / 2;
+};
+
+//console.log(median([1, 3, 5], [2]));
+
+//?
+//7,1,5,3,6,4
+
+var maxProfit = function (prices = []) {
+  let minPrice = Infinity;
+  let maxProfit = 0;
+  for (let i = 0; i < prices.length; i++) {
+    if (prices[i] < minPrice) {
+      minPrice = prices[i];
+    } else {
+      maxProfit += prices[i] - minPrice;
+      minPrice = prices[i];
+    }
+  }
+
+  return maxProfit;
+};
+
+//console.log(maxProfit([1, 4, 7, 8, 6, 4]));
+
+//? Pivot index
+//1,7,3,6,5,6
+
+var pivotIndex = function (nums = []) {
+  if (nums.length === 1) return nums[0];
+
+  let leftSum = 0;
+  let rightSum = nums.reduce((a, b) => a + b);
+
+  for (let i = 0; i < nums.length; i++) {
+    let current = nums[i];
+
+    rightSum -= nums[i];
+
+    if (rightSum === leftSum) {
+      return current;
+    }
+
+    leftSum += nums[i];
+  }
+
+  return -1;
+};
+
+//console.log(pivotIndex([1, 7, 3, 6, 5, 6]));
+
+//? Majority element
+//[2,2,1,1,1,2,2]
+
+var majorityElement = function (nums = []) {
+  const memo = {};
+  const n = nums.length;
+  for (let i = 0; i < n; i++) {
+    if (nums[i] in memo) {
+      memo[nums[i]]++;
+    } else {
+      memo[nums[i]] = 1;
+    }
+  }
+
+  let maxVal = -Infinity;
+  let maxKey = null;
+
+  for (const key in memo) {
+    if (maxVal < memo[key]) {
+      maxVal = memo[key];
+      maxKey = key;
+    }
+  }
+
+  return parseInt(maxKey);
+};
+
+var majorityElementAlt = function (nums = []) {
+  let majorityElement = nums[0];
+  let count = 1;
+
+  for (let i = 1; i < nums.length; i++) {
+    if (nums[i] === majorityElement) {
+      count++;
+    } else {
+      count--;
+    }
+
+    if (count === 0) {
+      majorityElement = nums[i];
+      count++;
+    }
+  }
+
+  return majorityElement;
+};
+
+//console.log(majorityElementAlt([2, 2, 1, 1, 1, 2]));
+
+//? sortedSquares
+
+var sortedSquares = function (nums = []) {
+  const n = nums.length;
+  let result = new Array(n);
+  let start = 0;
+  let end = n - 1;
+
+  for (let i = n - 1; i >= 0; i--) {
+    if (Math.abs(nums[start]) >= Math.abs(nums[end])) {
+      result[i] = nums[start] * nums[start];
+      start++;
+    } else {
+      result[i] = nums[end] * nums[end];
+      end--;
+    }
+  }
+
+  return result;
+};
+
+//console.log(sortedSquares([-7, -3, 2, 3, 11]));
+
+//? Pascal triangle
+
+var generate = function (numRows = 0) {
+  if (numRows === 1) return [[1]];
+  if (numRows === 2) return [[1], [1, 1]];
+
+  let prevRows = generate(numRows - 1);
+  let nextRow = new Array(numRows).fill(1);
+
+  for (let i = 1; i < numRows - 1; i++) {
+    nextRow[i] = prevRows[numRows - 2][i - 1] + prevRows[numRows - 2][i];
+  }
+
+  prevRows.push(nextRow);
+  return prevRows;
+};
+
+//console.log(generate(5));
+
+//? Merge intervals
+
+var merge = function (intervals = []) {
+  intervals.sort((a, b) => a[0] - b[0]);
+  console.log(intervals);
+
+  for (let i = 0; i < intervals.length - 1; i++) {
+    if (intervals[i][1] >= intervals[i + 1][0]) {
+      intervals[i] = [
+        Math.min(intervals[i][0], intervals[i + 1][0]),
+        Math.max(intervals[i][1], intervals[i + 1][1]),
+      ];
+      intervals.splice(i + 1, 1);
+      i--;
+    }
+    //console.log(intervals[i+1][0])
+  }
+
+  return intervals;
+};
+
+// console.log(
+//   merge([
+//     [1, 4],
+//     [2, 3],
+//   ])
+// );
+
+//? 3Sum
+//[-1,0,1,2,-1,-4]
+
+var threeSum = function (nums = []) {
+  nums.sort((a, b) => a - b);
+  let result = [];
+
+  const twoSum = (arr = [], target) => {
+    let left = 0;
+    let right = arr.length - 1;
+    let pairs = [];
+
+    while (left < right) {
+      let currSum = arr[left] + arr[right];
+      if (currSum < target) {
+        left++;
+      } else if (currSum > target) {
+        right--;
+      } else {
+        pairs.push([arr[left], arr[right]]);
+        left++;
+        right--;
+      }
+    }
+    return pairs;
+  };
+
+  for (let i = 0; i < nums.length; i++) {
+    if (i > 0 && nums[i] === nums[i - 1]) {
+      continue;
+    }
+    let curr = nums[i];
+    let twoSumToFind = -curr;
+    let twoSumResult = twoSum(nums.slice(i + 1), twoSumToFind);
+
+    if (twoSumResult.length > 0) {
+      // twoSumResult.push(nums[i]);
+      // result.push(twoSumResult);
+      for (let j = 0; j < twoSumResult.length; j++) {
+        let triplet = [curr, ...twoSumResult[j]];
+        result.push(triplet);
+      }
+    }
+  }
+
+  const filteredResult = Array.from(
+    new Set(result.map((subArr) => JSON.stringify(subArr)))
+  ).map(JSON.parse);
+
+  return filteredResult;
+};
+
+//console.log(threeSum([-1, 0, 1, 2, -1, -4, -2, -3, 3, 0, 4]));
+
+//? ThreeSumI
+
+const threeSumI = (nums = []) => {
+  nums.sort((a, b) => a - b);
+  let result = [];
+
+  for (let i = 0; i < nums.length - 2; i++) {
+    if (i > 0 && nums[i] === nums[i - 1]) {
+      continue;
+    }
+
+    let left = i + 1;
+    let right = nums.length - 1;
+
+    while (left < right) {
+      let sum = nums[i] + nums[left] + nums[right];
+
+      if (sum > 0) {
+        right--;
+      } else if (sum < 0) {
+        left++;
+      } else {
+        result.push([nums[i], nums[left], nums[right]]);
+        while (left < right && nums[left] === nums[left + 1]) {
+          left++;
+        }
+        while (left < right && nums[right] === nums[right - 1]) {
+          right--;
+        }
+        left++;
+        right--;
+      }
+    }
+  }
+
+  return result;
+};
+
+//console.log(threeSumI([-1, 0, 1, 2, -1, -4, -2, -3, 3, 0, 4]))
+
+//? productExceptSelf2 without divide
+//[1, 2, 3, 4]
+const productExceptSelf2 = (nums = []) => {
+  const n = nums.length;
+
+  const dpL = new Array(n).fill(1);
+  const dpR = new Array(n).fill(1);
+
+  let left = 0;
+  let right = n - 1;
+
+  while (left < n - 1 && right > 0) {
+    dpL[left + 1] = dpL[left] * nums[left];
+    left++;
+    dpR[right - 1] = dpR[right] * nums[right];
+    right--;
+  }
+
+  for (let i = 0; i < n; i++) {
+    nums[i] = dpL[i] * dpR[i];
+  }
+
+  console.log(dpL, dpR);
+  return nums;
+};
+
+//console.log(productExceptSelf2([-1,1,0,-3,3]))
+
+//? RandomizedSet
+
+var RandomizedSet = function () {
+  this.values = [];
+  this.valuesToIndex = {};
+};
+
+RandomizedSet.prototype.insert = function (val) {
+  if (this.valuesToIndex.hasOwnProperty(val)) return false;
+  this.values.push(val);
+  this.valuesToIndex[val] = this.values.length - 1;
+  return true;
+};
+
+RandomizedSet.prototype.remove = function (val) {
+  if (!this.valuesToIndex.hasOwnProperty(val)) return false;
+
+  let indexOfVal = this.valuesToIndex[val];
+  let indexOfLastElement = this.values.length - 1;
+
+  //swap the last element and the val element from the array
+  [this.values[indexOfVal], this.values[indexOfLastElement]] = [
+    this.values[indexOfLastElement],
+    this.values[indexOfVal],
+  ];
+  this.valuesToIndex[this.values[indexOfVal]] = indexOfVal;
+
+  //pop with O(1)
+  this.values.pop();
+  delete this.valuesToIndex[val];
+
+  return true;
+};
+
+RandomizedSet.prototype.getRandom = function () {
+  const randomIndex = Math.floor(Math.random() * this.values.length);
+  return this.values[randomIndex];
+};
+
+const mySet = new RandomizedSet();
+mySet.insert(0);
+mySet.insert(1);
+mySet.remove(0);
+mySet.insert(2);
+mySet.remove(1);
+console.log(mySet.getRandom());
+
+console.log(mySet);
