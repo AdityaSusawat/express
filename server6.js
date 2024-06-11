@@ -1,8 +1,41 @@
-const mapWith = (foo) => {
-  return (arg) => arg.map((e) => foo(e));
-};
+class Person {
+  static count = 3;
+  #name;
+  #age;
 
-const double = (x) => x * 2;
-const mapDouble = mapWith(double);
+  constructor(name, age) {
+    this.#name = name;
+    this.#age = age;
+  }
 
-console.log(mapDouble([1, 2, 3])); // [2, 4
+  setName(name) {
+    this.#name = name;
+  }
+
+  setAge(age) {
+    this.#age = age;
+  }
+
+  greet() {
+    console.log(`Hi ${this.name}, ${this.age}`);
+  }
+
+  static describe(x) {
+    console.log(`This is a Person object with a count ${this.count + x}`);
+  }
+}
+
+class Student extends Person {
+  constructor(name, age, grade) {
+    super(name, age);
+    this.grade = grade;
+  }
+
+  greet() {
+    console.log(`Hi ${this.name}, ${this.age}. You got grade ${this.grade}`);
+  }
+}
+
+const student = new Student("ABC", 12, "A");
+student.greet();
+Person.describe(7);
