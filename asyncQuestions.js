@@ -89,6 +89,30 @@ const fetchMultipleUrlsAsync = async (urls = []) => {
   }
 };
 
+const fetchFromMultipleUrlsNew = async (urls = []) => {
+  try {
+    const promiseArray = urls.map(async (url) => {
+      try {
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error(
+            `Failed to fetch from ${url}: ${response.statusText}`
+          ); //will throw and error and also send it to catch block and return null
+          //return null; //for HTTP errors not thrown by fetch
+        }
+        const responseData = await response.json();
+        return responseData;
+      } catch (error) {
+        return null; //for network errors
+      }
+    });
+    const promiseData = await Promise.all(promiseArray);
+    console.log(promiseData);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 //? retrieve value from a promise if possible before timer, else return error
 
 function timeoutPromise(promise, timer) {
@@ -109,6 +133,19 @@ const timeoutPromiseAsync = async (promise, timer) => {
   });
 
   return Promise.race([promise, rejectPromise]);
+};
+
+const timeoutPromiseAsyncNew = async (promise, timer) => {
+  const rejectPromise = new Promise((_, reject) => {
+    setTimeout(() => reject("Timeout!"), timer);
+  });
+
+  try {
+    const result = await Promise.race([promise, rejectPromise]);
+    console.log(result);
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 //? Fetch from a primary url, else from a secondary url
